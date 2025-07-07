@@ -6,7 +6,15 @@
 #include <conio.h>
 #include <chrono>
 #include <thread>
-#include <iomanip> // Required for formatting the leaderboard output
+#include <iomanip> 
+
+#define PURPLE "\033[35m"
+#define AMETHYSTINE "\033[1;35m"
+#define TURQUOISE "\033[1;36m"
+#define COBALTBLUE "\033[36m"
+#define GRAY "\033[90m"
+#define RESET "\033[0m"
+
 
 using namespace std;
 using namespace chrono;
@@ -21,7 +29,7 @@ struct Player {
 // --- Global Variables ---
 string playerName;
 int rows, cols, bombCount, flagsRemaining;
-bool gameover = false; // This flag will be true only when the game is lost
+bool gameover = false;
 time_point<high_resolution_clock> theStartTime;
 
 // Leaderboard-related global variables
@@ -58,9 +66,9 @@ void clearScreen() {
     system("cls");
 }
 
-void pauseForSeconds(int seconds) {
+void pauseForMilliseconds(int seconds) {
     // Pauses the program execution for a specified duration.
-    this_thread::sleep_for(chrono::seconds(seconds));
+    this_thread::sleep_for(chrono::milliseconds(seconds));
 }
 
 
@@ -107,7 +115,9 @@ void saveInfo() {
     ofstream file("leaderboard.txt", ios::trunc);
     if (file.is_open()) {
         for (int i = 0; i < NumOfPlayers; i++) {
-            file << players[i].name << " " << players[i].score << " " << players[i].time << endl;
+            file << players[i].name << " " 
+                 << players[i].score << " " 
+                 << players[i].time << endl;
         }
     }
     file.close();
@@ -118,20 +128,24 @@ void saveInfo() {
 void leaderboard() {
     clearScreen();
     // ASCII Art for the title
-    cout << "\033[93m" << " █   ██▀ ▄▀▄ █▀▄ ██▀ █▀▄ ██▄ ▄▀▄ ▄▀▄ █▀▄ █▀▄\n" << "\033[35m" << " █▄▄ █▄▄ █▀█ █▄▀ █▄▄ █▀▄ █▄█ ▀▄▀ █▀█ █▀▄ █▄▀\n" << "\033[0m" << "\n";
-    cout << "\n";
+    cout << TURQUOISE << " _                _           _                         _ \n";                pauseForMilliseconds(500);
+    cout << "| | ___  __ _  __| | ___ _ __| |__   ___   __ _ _ __ __| |\n";                pauseForMilliseconds(500);
+    cout << "| |/ _ \\/ _` |/ _` |/ _ \\ '__| '_ \\ / _ \\ / _` | '__/ _` |\n" << RESET;            pauseForMilliseconds(500);
+    cout << AMETHYSTINE << "| |  __/ (_| | (_| |  __/ |  | |_) | (_) | (_| | | | (_| |\n";                pauseForMilliseconds(500);
+    cout << "|_|\\___|\\__,_|\\__,_|\\___|_|  |_.__/ \\___/ \\__,_|_|  \\__,_|\n" << "\n" << RESET; pauseForMilliseconds(1500);
+    
 
     // Table Headers
-    cout << setw(15) << left << "Name"
+    cout << GRAY << setw(13) << left << "Name"
          << setw(15) << "Score"
-         << setw(10) << "Time(s)" << endl;
-    cout << string(40, '_') << endl;
+         << setw(10) << "Time(s)" << RESET << "\n";
+    cout << PURPLE << string(40, '_') << RESET << "\n";
 
     // Print each player's data
     for (int i = 0; i < NumOfPlayers; i++) {
-        cout << setw(15) << left << players[i].name
+        cout << GRAY << setw(15) << left << players[i].name
              << setw(15) << players[i].score
-             << setw(10) << players[i].time << endl;
+             << setw(10) << players[i].time << RESET << "\n";
     }
 }
 
@@ -170,7 +184,7 @@ void getGameDimensions() {
         cout << "Invalid dimensions. Setting to default 10x10.\n";
         rows = 10;
         cols = 10;
-        pauseForSeconds(2);
+        pauseForMilliseconds(2000);
     }
 }
 
@@ -201,7 +215,7 @@ void getGameDifficulty() {
     default: // Default to easy if input is invalid
         cout << "Invalid selection. Defaulting to Easy.\n";
         bombCount = (rows * cols) / 10;
-        pauseForSeconds(2);
+        pauseForMilliseconds(2000);
         break;
     }
     flagsRemaining = bombCount;
@@ -286,11 +300,11 @@ int main() {
             break;
         case '3': // Exit
             cout << "Exiting game. Goodbye!\n";
-            pauseForSeconds(2);
+            pauseForMilliseconds(2000);
             return 0; // Exit the program
         default:
             cout << "\nInvalid choice. Please press 1, 2, or 3.";
-            pauseForSeconds(2);
+            pauseForMilliseconds(2000);
             break;
         }
     }
@@ -329,7 +343,7 @@ void MainGame(char** min, char** cell, int rows, int cols) {
             clearScreen();
             cout << "Congratulations! You Win!" << "\n";
             cout << "Time: " << timer << " seconds." << "\n";
-            pauseForSeconds(4);
+            pauseForMilliseconds(4000);
             return; // Exit MainGame and return to the main menu
         }
 
@@ -405,7 +419,7 @@ void MainGame(char** min, char** cell, int rows, int cols) {
         cout << "\u2551\n";
     }
     cout << "\u255A" << string(cols * 2, '\u2550') << "\u255D\n";
-    pauseForSeconds(5);
+    pauseForMilliseconds(5000);
 }
 
 /**
