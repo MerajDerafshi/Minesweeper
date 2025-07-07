@@ -2,7 +2,6 @@
 #include <windows.h>
 #include <fstream>
 #include <ctime>
-#include "MineSweeper12Segment.h"
 #include <conio.h>
 #include <chrono>
 #include <thread>
@@ -13,6 +12,9 @@
 #define TURQUOISE "\033[1;36m"
 #define COBALTBLUE "\033[36m"
 #define GRAY "\033[90m"
+#define RED "\033[1;31m"
+#define BLUE "\033[1;34m"
+#define YELLOW "\033[1;33m"
 #define RESET "\033[0m"
 
 
@@ -152,17 +154,42 @@ void leaderboard() {
 // --- Core Game Setup ---
 
 void showMenu() {
-    print(); // Displays a 12-segment ASCII art representation of "Minesweeper".
+    cout << PURPLE << " __  __ _                                                   \n";
+    pauseForMilliseconds(500);
+    cout << "|  \\/  (_)_ __   ___ " << RESET << YELLOW << " _____      _____  ___ _ __   ___ _ __ \n" << RESET;
+    pauseForMilliseconds(500);
+    cout << PURPLE << "| |\\/| | | '_ \\ / _ \\" << RESET << YELLOW << "/ __\\ \\ /\\ / / _ \\/ _ \\ '_ \\ / _ \\ '__|\n" << RESET;
+    pauseForMilliseconds(500);
+    cout << PURPLE << "| |  | | | | | |  __/" << RESET << YELLOW << "\\__ \\\\ V  V /  __/  __/ |_) |  __/ |   \n" << RESET;
+    pauseForMilliseconds(500);
+    cout << PURPLE << "|_|  |_|_|_| |_|\\___|" << RESET << YELLOW << "|___/ \\_/\\_/ \\___|\\___| .__/ \\___|_|   \n";
+    pauseForMilliseconds(500);
+    cout << "                                           |_|              \n" << RESET;
+    pauseForMilliseconds(1500);
 
-    cout << string(32, ' ') << "\u2554" << string(16, '\u2550') << "\u2557\n";
-    cout << string(32, ' ') << "\u2551" << string(16, ' ') << "\u2551\n";
-    cout << string(32, ' ') << "\u2551" << "\033[32m" << "1. New Game" << "\033[0m" << "     " << "\u2551\n";
-    cout << string(32, ' ') << "\u2551" << string(16, ' ') << "\u2551\n";
-    cout << string(32, ' ') << "\u2551" << "\033[32m" << "2. Leaderboard" << "\033[0m" << "  " << "\u2551\n";
-    cout << string(32, ' ') << "\u2551" << string(16, ' ') << "\u2551\n";
-    cout << string(32, ' ') << "\u2551" << "\033[32m" << "3. Exit" << "\033[0m" << "         " << "\u2551\n";
-    cout << string(32, ' ') << "\u2551" << string(16, ' ') << "\u2551\n";
-    cout << string(32, ' ') << "\u255A" << string(16, '\u2550') << "\u255D\n";
+    cout << string(20, ' ') << PURPLE << " ____________________\n";
+    pauseForMilliseconds(250);
+    cout << string(20, ' ') << "|                    |\n";
+    pauseForMilliseconds(250);
+    cout << string(20, ' ') << "|" << RESET << YELLOW << "     1.New Game     " << RESET << PURPLE << "|\n";
+    pauseForMilliseconds(250);
+    cout << string(20, ' ') << "|____________________|\n" << RESET;
+    pauseForMilliseconds(250);
+    cout << string(20, ' ') << PURPLE << " ____________________\n";
+    pauseForMilliseconds(250);
+    cout << string(20, ' ') << "|                    |\n";
+    pauseForMilliseconds(250);
+    cout << string(20, ' ') << "|" << RESET << YELLOW << "    2.Leaderboard   " << RESET << PURPLE << "|\n";
+    pauseForMilliseconds(250);
+    cout << string(20, ' ') << "|____________________|\n" << RESET;
+    pauseForMilliseconds(250);
+    cout << string(20, ' ') << PURPLE << " ____________________\n";
+    pauseForMilliseconds(250);
+    cout << string(20, ' ') << "|                    |\n";
+    pauseForMilliseconds(250);
+    cout << string(20, ' ') << "|" << RESET << YELLOW << "       3.Exit       " << RESET << PURPLE << "|\n";
+    pauseForMilliseconds(250);
+    cout << string(20, ' ') << "|____________________|\n" << RESET;
 }
 
 
