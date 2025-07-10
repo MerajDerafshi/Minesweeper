@@ -1,5 +1,7 @@
 #include <bits/stdc++.h>
+#ifdef _WIN32
 #include <windows.h>
+#endif
 #include <fstream>
 #include <ctime>
 #include <conio.h>
@@ -138,7 +140,7 @@ void leaderboard() {
     
 
     // Table Headers
-    cout << GRAY << setw(13) << left << "Name"
+    cout << "\033[1;90m" << setw(13) << left << "Name"
          << setw(15) << "Score"
          << setw(10) << "Time(s)" << RESET << "\n";
     cout << PURPLE << string(40, '_') << RESET << "\n";
@@ -167,35 +169,29 @@ void showMenu() {
     cout << "                                           |_|              \n" << RESET;
     pauseForMilliseconds(1500);
 
-    cout << string(20, ' ') << PURPLE << " ____________________\n";
+    cout << string(20, ' ') << PURPLE << "┌────────────────────┐\n";
     pauseForMilliseconds(250);
-    cout << string(20, ' ') << "|                    |\n";
+    cout << string(20, ' ') << "│" << RESET << YELLOW << "     1.New Game     " << RESET << PURPLE << "│\n";
     pauseForMilliseconds(250);
-    cout << string(20, ' ') << "|" << RESET << YELLOW << "     1.New Game     " << RESET << PURPLE << "|\n";
+    cout << string(20, ' ') << "└────────────────────┘\n" << RESET;
     pauseForMilliseconds(250);
-    cout << string(20, ' ') << "|____________________|\n" << RESET;
+    cout << string(20, ' ') << PURPLE << "┌────────────────────┐\n";
     pauseForMilliseconds(250);
-    cout << string(20, ' ') << PURPLE << " ____________________\n";
+    cout << string(20, ' ') << "│" << RESET << YELLOW << "    2.Leaderboard   " << RESET << PURPLE << "│\n";
     pauseForMilliseconds(250);
-    cout << string(20, ' ') << "|                    |\n";
+    cout << string(20, ' ') << "└────────────────────┘\n" << RESET;
     pauseForMilliseconds(250);
-    cout << string(20, ' ') << "|" << RESET << YELLOW << "    2.Leaderboard   " << RESET << PURPLE << "|\n";
+    cout << string(20, ' ') << PURPLE << "┌────────────────────┐\n";
     pauseForMilliseconds(250);
-    cout << string(20, ' ') << "|____________________|\n" << RESET;
+    cout << string(20, ' ') << "│" << RESET << YELLOW << "       3.Exit       " << RESET << PURPLE << "│\n";
     pauseForMilliseconds(250);
-    cout << string(20, ' ') << PURPLE << " ____________________\n";
-    pauseForMilliseconds(250);
-    cout << string(20, ' ') << "|                    |\n";
-    pauseForMilliseconds(250);
-    cout << string(20, ' ') << "|" << RESET << YELLOW << "       3.Exit       " << RESET << PURPLE << "|\n";
-    pauseForMilliseconds(250);
-    cout << string(20, ' ') << "|____________________|\n" << RESET;
+    cout << string(20, ' ') << "└────────────────────┘\n" << RESET;
 }
 
 
 void getPlayerName() {
     clearScreen();
-    cout << "Enter Your Name: ";
+    cout << "𝘌𝘯𝘵𝘦𝘳 𝘺𝘰𝘶𝘳 𝘯𝘢𝘮𝘦:";
     cin >> playerName;
 }
 
@@ -250,7 +246,9 @@ void getGameDifficulty() {
 
 
 int main() {
-    SetConsoleOutputCP(CP_UTF8); // Enable UTF-8 characters for box drawing
+    #ifdef _WIN32
+    SetConsoleOutputCP(CP_UTF8);
+    #endif
 
     while (true) {
         clearScreen();
