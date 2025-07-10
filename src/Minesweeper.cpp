@@ -17,6 +17,7 @@
 #define RED "\033[1;31m"
 #define BLUE "\033[1;34m"
 #define YELLOW "\033[1;33m"
+#define GREEN "\033[1;92m"
 #define RESET "\033[0m"
 
 
@@ -191,20 +192,20 @@ void showMenu() {
 
 void getPlayerName() {
     clearScreen();
-    cout << "𝘌𝘯𝘵𝘦𝘳 𝘺𝘰𝘶𝘳 𝘯𝘢𝘮𝘦:";
-    cin >> playerName;
+    cout << "\033[1;37;46m" << "\nEnter your name:\n" << RESET;
+    cin  >> playerName;
 }
 
 
 void getGameDimensions() {
     clearScreen();
-    cout << "Enter the number of rows: ";
-    cin >> rows;
-    cout << "Enter the number of columns: ";
-    cin >> cols;
+    cout << "\033[1;37;46m" << "Enter the number of rows:\n" << RESET;
+    cin  >> rows;
+    cout << "\033[1;37;46m" << "Enter the number of columns:\n" << RESET;
+    cin  >> cols;
     // Basic validation for dimensions
     if (rows < 5 || cols < 5) {
-        cout << "Invalid dimensions. Setting to default 10x10.\n";
+        cout << "\033[1;30;43m" << "Invalid dimensions. Setting to default 10x10.\n" << RESET;
         rows = 10;
         cols = 10;
         pauseForMilliseconds(2000);
@@ -257,7 +258,7 @@ void getGameDifficulty() {
         bombCount = (rows * cols) / 4;  // 25% bombs
         break;
     default: // Default to easy if input is invalid
-        cout << "Invalid selection. Defaulting to Easy.\n";
+        cout << "\033[1;37;46m" << "Invalid selection. Defaulting to Easy.\n" << RESET;
         bombCount = (rows * cols) / 10;
         pauseForMilliseconds(2000);
         break;
@@ -341,16 +342,17 @@ int main() {
         }
         case '2': // Leaderboard
             loadData(); // This will load, sort, and display the leaderboard
-            cout << "\nPress Enter to return to the menu...";
+            cout  << "\033[1;37m" << "\nPress Enter to return to the menu..." << RESET;
             getch();
             break;
         case '3': // Exit
-            cout << "Exiting game. Goodbye!\n";
+            cout << RED << "Exiting game. Goodbye!\n";
             pauseForMilliseconds(2000);
             return 0; // Exit the program
         default:
-            cout << "\nInvalid choice. Please press 1, 2, or 3.";
+            cout << "\033[1;37;46m" << "\nInvalid choice. Please press 1, 2, or 3." << RESET;
             pauseForMilliseconds(2000);
+            getch();
             break;
         }
     }
@@ -387,33 +389,38 @@ void MainGame(char** min, char** cell, int rows, int cols) {
             saveData(playerName, timer, true); // Save win data
 
             clearScreen();
-            cout << "Congratulations! You Win!" << "\n";
-            cout << "Time: " << timer << " seconds." << "\n";
+            cout << GREEN << "\nCongratulations! You Win!\n";
+            cout << "Time: " << timer << " seconds.\n" << RESET;
             pauseForMilliseconds(4000);
             return; // Exit MainGame and return to the main menu
         }
 
         // Display UI and Board
-        cout << "\033[35m" << "Player Name : " << "\033[0m" << playerName << "\n";
+        cout << COBALTBLUE << "Hi, " << playerName << "\n" << RESET;
         cout << "Use W,A,S,D to move. Enter to select." << "\n";
         cout << "f -> Flag/unFlag" << "\n";
         cout << "Esc -> Return to Menu" << "\n";
+
         printBorder(cols);
 
         for (int i = 0; i < rows; i++) {
-            cout << "\u2551";
+            cout << TURQUOISE << "│" << RESET;
             for (int j = 0; j < cols; j++) {
                 if (i == x && j == y) { // Highlight current cursor position
-                    cout << "\033[44m" << cell[i][j] << " " << "\033[0m";
+                    cout << YELLOW << cell[i][j] << " " << RESET;
                 } else {
                     cout << cell[i][j] << " ";
                 }
             }
-            cout << "\u2551\n";
+            cout << TURQUOISE << "│\n" << RESET;
         }
 
-        cout << "\u255A" << string(cols * 2, '\u2550') << "\u255D\n";
-        cout << "\033[35m" << "Flags Remaining: " << "\033[0m" << flagsRemaining << "\n";
+        cout << TURQUOISE << "└";
+        for (int i = 0; i < cols * 2; i++) {
+            cout << "─";
+        } 
+        cout << "┘\n" << RESET;
+        cout << COBALTBLUE << "Flags Remaining: " << RESET << flagsRemaining << "\n";
 
         // Handle user input
         int input = getch();
@@ -451,20 +458,24 @@ void MainGame(char** min, char** cell, int rows, int cols) {
     saveData(playerName, timer, false); // Save loss data
     
     clearScreen();
-    cout << "GameOver!\n";
+    cout << RED << "GameOver!\n" << RESET;
     printBorder(cols);
     for (int i = 0; i < rows; i++) {
-        cout << "\u2551";
+        cout << TURQUOISE << "│" << RESET;
         for (int j = 0; j < cols; j++) {
             if (min[i][j] == '9') {
-                cout << "\033[91m" << "B " << "\033[0m"; // Show all Bombs
+                cout << RED << "B " << RESET; // Show all Bombs
             } else {
                 cout << cell[i][j] << " ";
             }
         }
-        cout << "\u2551\n";
+        cout << TURQUOISE << "│\n" << RESET;
     }
-    cout << "\u255A" << string(cols * 2, '\u2550') << "\u255D\n";
+    cout << TURQUOISE << "└";
+    for (int i = 0; i < cols * 2; i++) {
+        cout << "─";
+    } 
+    cout << "┘\n" << RESET;
     pauseForMilliseconds(5000);
 }
 
@@ -516,5 +527,9 @@ void ifIsZero(char** min, char** cell, int i, int j, int rows, int cols) {
  * @param cols The number of columns to size the border correctly.
  */
 void printBorder(int cols) {
-    cout << "\u2554" << string(cols * 2, '\u2550') << "\u2557\n";
+    cout << TURQUOISE << "┌";
+    for (int i = 0; i < cols * 2; i++) {
+        cout << "─";
+    } 
+    cout << "┐\n" << RESET;
 }
