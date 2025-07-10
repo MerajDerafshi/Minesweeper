@@ -13,7 +13,7 @@
 #define AMETHYSTINE "\033[1;35m"
 #define TURQUOISE "\033[1;36m"
 #define COBALTBLUE "\033[36m"
-#define GRAY "\033[90m"
+#define GRAY "\033[1;90m"
 #define RED "\033[1;31m"
 #define BLUE "\033[1;34m"
 #define YELLOW "\033[1;33m"
@@ -132,15 +132,15 @@ void saveInfo() {
 void leaderboard() {
     clearScreen();
     // ASCII Art for the title
-    cout << TURQUOISE << " _                _           _                         _ \n";                pauseForMilliseconds(500);
-    cout << "| | ___  __ _  __| | ___ _ __| |__   ___   __ _ _ __ __| |\n";                pauseForMilliseconds(500);
+    cout << TURQUOISE << " _                _           _                         _ \n";            pauseForMilliseconds(500);
+    cout << "| | ___  __ _  __| | ___ _ __| |__   ___   __ _ _ __ __| |\n";                         pauseForMilliseconds(500);
     cout << "| |/ _ \\/ _` |/ _` |/ _ \\ '__| '_ \\ / _ \\ / _` | '__/ _` |\n" << RESET;            pauseForMilliseconds(500);
-    cout << AMETHYSTINE << "| |  __/ (_| | (_| |  __/ |  | |_) | (_) | (_| | | | (_| |\n";                pauseForMilliseconds(500);
+    cout << AMETHYSTINE << "| |  __/ (_| | (_| |  __/ |  | |_) | (_) | (_| | | | (_| |\n";          pauseForMilliseconds(500);
     cout << "|_|\\___|\\__,_|\\__,_|\\___|_|  |_.__/ \\___/ \\__,_|_|  \\__,_|\n" << "\n" << RESET; pauseForMilliseconds(1500);
     
 
     // Table Headers
-    cout << "\033[1;90m" << setw(13) << left << "Name"
+    cout << GRAY << setw(13) << left << "Name"
          << setw(15) << "Score"
          << setw(10) << "Time(s)" << RESET << "\n";
     cout << PURPLE << string(40, '_') << RESET << "\n";
@@ -158,15 +158,15 @@ void leaderboard() {
 void showMenu() {
     cout << PURPLE << " __  __ _                                                   \n";
     pauseForMilliseconds(500);
-    cout << "|  \\/  (_)_ __   ___ " << RESET << YELLOW << " _____      _____  ___ _ __   ___ _ __ \n" << RESET;
+    cout << "|  \\/  (_)_ __   ___ "             << RESET << YELLOW << " _____      _____  ___ _ __   ___ _ __ \n"        << RESET;
     pauseForMilliseconds(500);
     cout << PURPLE << "| |\\/| | | '_ \\ / _ \\" << RESET << YELLOW << "/ __\\ \\ /\\ / / _ \\/ _ \\ '_ \\ / _ \\ '__|\n" << RESET;
     pauseForMilliseconds(500);
-    cout << PURPLE << "| |  | | | | | |  __/" << RESET << YELLOW << "\\__ \\\\ V  V /  __/  __/ |_) |  __/ |   \n" << RESET;
+    cout << PURPLE << "| |  | | | | | |  __/"    << RESET << YELLOW << "\\__ \\\\ V  V /  __/  __/ |_) |  __/ |   \n"     << RESET;
     pauseForMilliseconds(500);
-    cout << PURPLE << "|_|  |_|_|_| |_|\\___|" << RESET << YELLOW << "|___/ \\_/\\_/ \\___|\\___| .__/ \\___|_|   \n";
+    cout << PURPLE << "|_|  |_|_|_| |_|\\___|"   << RESET << YELLOW << "|___/ \\_/\\_/ \\___|\\___| .__/ \\___|_|   \n";
     pauseForMilliseconds(500);
-    cout << "                                           |_|              \n" << RESET;
+    cout << "                                           |_|              \n"                                              << RESET;
     pauseForMilliseconds(1500);
 
     cout << string(20, ' ') << PURPLE << "┌────────────────────┐\n";
@@ -214,15 +214,36 @@ void getGameDimensions() {
 
 void getGameDifficulty() {
     clearScreen();
-    cout << "\u2554" << string(16, '\u2550') << "\u2557\n";
-    cout << "\u2551" << "SelectDifficulty" << "\u2551\n";
-    cout << "\u2560" << string(16, '\u2550') << "\u2563\n";
-    cout << "\u2551" << "1. Easy         " << "\u2551\n";
-    cout << "\u2551" << "                " << "\u2551\n";
-    cout << "\u2551" << "2. Medium       " << "\u2551\n";
-    cout << "\u2551" << "                " << "\u2551\n";
-    cout << "\u2551" << "3. Hard         " << "\u2551\n";
-    cout << "\u255A" << string(16, '\u2550') << "\u255D\n";
+    cout << TURQUOISE << " ____       _           _  "     << RESET << YELLOW << " ____  _  __  __ _            _ _         \n"     << RESET;
+    pauseForMilliseconds(250);
+    cout << TURQUOISE << "/ ___|  ___| | ___  ___| |_"     << RESET << YELLOW << "|  _ \\(_)/ _|/ _(_) ___ _   _| | |_ _   _ \n"    << RESET;
+    pauseForMilliseconds(250);
+    cout << TURQUOISE << "\\___ \\ / _ \\ |/ _ \\/ __| __" << RESET << YELLOW << "| | | | | |_| |_| |/ __| | | | | __| | | |\n"     << RESET;
+    pauseForMilliseconds(250);
+    cout << TURQUOISE << " ___) |  __/ |  __/ (__| |_"     << RESET << YELLOW << "| |_| | |  _|  _| | (__| |_| | | |_| |_| |\n"     << RESET;
+    pauseForMilliseconds(250);
+    cout << TURQUOISE << "|____/ \\___|_|\\___|\\___|\\__" << RESET << YELLOW << "|____/|_|_| |_| |_|\\___|\\__,_|_|\\__|\\__, |\n" << RESET;
+    pauseForMilliseconds(250);
+    cout << YELLOW    << "                                                               |___/ \n"                                  << RESET;
+    pauseForMilliseconds(500);
+
+    cout << string(20, ' ') << TURQUOISE << "┌────────────────────┐\n";
+    pauseForMilliseconds(250);
+    cout << string(20, ' ') << "│" << RESET << YELLOW << "       1.Easy       " << RESET << TURQUOISE << "│\n";
+    pauseForMilliseconds(250);
+    cout << string(20, ' ') << "└────────────────────┘\n" << RESET;
+    pauseForMilliseconds(250);
+    cout << string(20, ' ') << TURQUOISE << "┌────────────────────┐\n";
+    pauseForMilliseconds(250);
+    cout << string(20, ' ') << "│" << RESET << YELLOW << "      2.Medium      " << RESET << TURQUOISE << "│\n";
+    pauseForMilliseconds(250);
+    cout << string(20, ' ') << "└────────────────────┘\n" << RESET;
+    pauseForMilliseconds(250);
+    cout << string(20, ' ') << TURQUOISE << "┌────────────────────┐\n";
+    pauseForMilliseconds(250);
+    cout << string(20, ' ') << "│" << RESET << YELLOW << "       3.Hard       " << RESET << TURQUOISE << "│\n";
+    pauseForMilliseconds(250);
+    cout << string(20, ' ') << "└────────────────────┘\n" << RESET;
 
     char click1 = getch();
     switch (click1) {
