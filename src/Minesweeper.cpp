@@ -346,11 +346,11 @@ int main() {
             getch();
             break;
         case '3': // Exit
-            cout << RED << "Exiting game. Goodbye!\n";
+            cout << RED << "Exiting game. Goodbye!\n" << RESET;
             pauseForMilliseconds(2000);
             return 0; // Exit the program
         default:
-            cout << "\033[1;37;46m" << "\nInvalid choice. Please press 1, 2, or 3." << RESET;
+            cout << "\033[30;43m" << "\nInvalid choice. Please press 1, 2, or 3." << RESET;
             pauseForMilliseconds(2000);
             getch();
             break;
@@ -362,13 +362,6 @@ int main() {
 
 // --- Game Logic ---
 
-/**
- * @brief The main game loop where player interaction happens.
- * @param min The hidden board with mines and numbers.
- * @param cell The player-visible board.
- * @param rows The number of rows in the grid.
- * @param cols The number of columns in the grid.
- */
 void MainGame(char** min, char** cell, int rows, int cols) {
     int x = 0, y = 0; // Player's cursor position
 
@@ -396,7 +389,7 @@ void MainGame(char** min, char** cell, int rows, int cols) {
         }
 
         // Display UI and Board
-        cout << COBALTBLUE << "Hi, " << playerName << "\n" << RESET;
+        cout << TURQUOISE << "Hi, " << playerName << "\n" << RESET;
         cout << "Use W,A,S,D to move. Enter to select." << "\n";
         cout << "f -> Flag/unFlag" << "\n";
         cout << "Esc -> Return to Menu" << "\n";
@@ -404,23 +397,46 @@ void MainGame(char** min, char** cell, int rows, int cols) {
         printBorder(cols);
 
         for (int i = 0; i < rows; i++) {
-            cout << TURQUOISE << "│" << RESET;
+            cout << COBALTBLUE << "│" << RESET;
             for (int j = 0; j < cols; j++) {
                 if (i == x && j == y) { // Highlight current cursor position
-                    cout << YELLOW << cell[i][j] << " " << RESET;
+                    cout << YELLOW << " " << cell[i][j] << " " << RESET;
                 } else {
-                    cout << cell[i][j] << " ";
+            // Apply colors to numbers
+                switch (cell[i][j]) {
+                    case '1':
+                        cout << BLUE        << " " << cell[i][j] << " " << RESET;
+                        break;
+                    case '2':
+                        cout << GREEN       << " " << cell[i][j] << " " << RESET;
+                        break;
+                    case '3':
+                        cout << RED         << " " << cell[i][j] << " " << RESET;
+                        break;
+                    case '4':
+                        cout << PURPLE      << " " << cell[i][j] << " " << RESET;
+                        break;
+                    case '5':
+                        cout << AMETHYSTINE << " " << cell[i][j] << " " << RESET;
+                        break;
+                    case '0':
+                        cout << GRAY        << " " << cell[i][j] << " " << RESET;
+                        break;
+                    default: // For '#', 'f', '0', etc.
+                        cout << " " << cell[i][j] << " ";
+                        break;
+                    }
                 }
             }
-            cout << TURQUOISE << "│\n" << RESET;
+            cout << COBALTBLUE << "│\n" << RESET;
         }
 
-        cout << TURQUOISE << "└";
-        for (int i = 0; i < cols * 2; i++) {
+        cout << COBALTBLUE << "└";
+        for (int i = 0; i < cols * 3; i++) {
             cout << "─";
         } 
         cout << "┘\n" << RESET;
-        cout << COBALTBLUE << "Flags Remaining: " << RESET << flagsRemaining << "\n";
+        cout << TURQUOISE << "Flags Remaining: " << RESET << flagsRemaining << "\n";
 
         // Handle user input
         int input = getch();
@@ -461,31 +477,48 @@ void MainGame(char** min, char** cell, int rows, int cols) {
     cout << RED << "GameOver!\n" << RESET;
     printBorder(cols);
     for (int i = 0; i < rows; i++) {
-        cout << TURQUOISE << "│" << RESET;
+        cout << COBALTBLUE << "│" << RESET;
         for (int j = 0; j < cols; j++) {
             if (min[i][j] == '9') {
-                cout << RED << "B " << RESET; // Show all Bombs
+                cout << RED << " B " << RESET; // Show all Bombs
             } else {
-                cout << cell[i][j] << " ";
+            // Apply colors to numbers
+                switch (cell[i][j]) {
+                    case '1':
+                        cout << BLUE        << " " << cell[i][j] << " " << RESET;
+                        break;
+                    case '2':
+                        cout << GREEN       << " " << cell[i][j] << " " << RESET;
+                        break;
+                    case '3':
+                        cout << RED         << " " << cell[i][j] << " " << RESET;
+                        break;
+                    case '4':
+                        cout << PURPLE      << " " << cell[i][j] << " " << RESET;
+                        break;
+                    case '5':
+                        cout << AMETHYSTINE << " " << cell[i][j] << " " << RESET;
+                        break;
+                    case '0':
+                        cout << GRAY        << " " << cell[i][j] << " " << RESET;
+                        break;
+                    default: // For '#', 'f', '0', etc.
+                        cout << " " << cell[i][j] << " ";
+                        break;
+                }
             }
         }
-        cout << TURQUOISE << "│\n" << RESET;
+        cout << COBALTBLUE << "│\n" << RESET;
     }
-    cout << TURQUOISE << "└";
-    for (int i = 0; i < cols * 2; i++) {
+    cout << COBALTBLUE << "└";
+    for (int i = 0; i < cols * 3; i++) {
         cout << "─";
     } 
     cout << "┘\n" << RESET;
     pauseForMilliseconds(5000);
 }
 
-/**
- * @brief Handles the logic for clicking a single cell. Updates the board state.
- * @param min The hidden board.
- * @param cell The visible board.
- * @param i The row of the clicked cell.
- * @param j The column of the clicked cell.
- */
+
 void game(char** min, char** cell, int i, int j, int rows, int cols) {
     if (min[i][j] == '9') {
         gameover = true; // Signal a loss to the MainGame loop
@@ -498,10 +531,7 @@ void game(char** min, char** cell, int i, int j, int rows, int cols) {
     }
 }
 
-/**
- * @brief Recursively reveals adjacent cells if an empty ('0') cell is clicked.
- * This is a flood-fill algorithm.
- */
+
 void ifIsZero(char** min, char** cell, int i, int j, int rows, int cols) {
     // Boundary and state checks to prevent infinite recursion
     if (i < 0 || i >= rows || j < 0 || j >= cols || cell[i][j] != '#') {
@@ -522,13 +552,10 @@ void ifIsZero(char** min, char** cell, int i, int j, int rows, int cols) {
     }
 }
 
-/**
- * @brief Prints the top or bottom border of the game grid.
- * @param cols The number of columns to size the border correctly.
- */
+
 void printBorder(int cols) {
-    cout << TURQUOISE << "┌";
-    for (int i = 0; i < cols * 2; i++) {
+    cout << COBALTBLUE << "┌";
+    for (int i = 0; i < cols * 3; i++) {
         cout << "─";
     } 
     cout << "┐\n" << RESET;
