@@ -18,6 +18,8 @@
 #define BLUE "\033[1;34m"
 #define YELLOW "\033[1;33m"
 #define GREEN "\033[1;92m"
+#define SILVER "\033[1;97m"
+#define BRONZE "\033[0;33m"
 #define RESET "\033[0m"
 
 
@@ -29,11 +31,15 @@ struct Player {
     string name;
     long long int time = 0;
     int score = 0;
+    string difficulty;
+    string dimensions;
 };
 
 // --- Global Variables ---
 string playerName;
 int rows, cols, bombCount, flagsRemaining;
+int difficultyMultiplier = 1;
+string difficultyLevel;
 bool gameover = false;
 time_point<high_resolution_clock> theStartTime;
 
@@ -80,11 +86,14 @@ void pauseForMilliseconds(int seconds) {
 // --- Leaderboard Functions ---
 
 void saveData(string name, long long int time, bool win) {
-    // Score is higher for faster wins, and 0 for a loss.
-    int score = win ? max(0LL, 1000 - time) : 0;
+    
+    long long effective_time = max(1LL, time);
+    long long score = win ? (rows * cols * difficultyMultiplier * 100) / effective_time : 0; // Score is 0 for a loss
+
     ofstream file("leaderboard.txt", ios::app); // Open in append mode
     if (file.is_open()) {
-        file << name << " " << score << " " << time << endl;
+        string dims = to_string(rows) + "x" + to_string(cols);
+        file << name << " " << score << " " << time << " " << difficultyLevel << " " << dims << endl;
     }
     file.close();
 }
@@ -94,7 +103,12 @@ void loadData() {
     if (file.is_open()) {
         NumOfPlayers = 0; // Reset player count before loading
         // Read each line until the end of the file
-        while (NumOfPlayers < 100 && file >> players[NumOfPlayers].name >> players[NumOfPlayers].score >> players[NumOfPlayers].time) {
+        while (NumOfPlayers < 100 && file >> players[NumOfPlayers].name       >>
+                                             players[NumOfPlayers].score      >>
+                                             players[NumOfPlayers].time       >> 
+                                             players[NumOfPlayers].difficulty >>
+                                             players[NumOfPlayers].dimensions) 
+        {
             NumOfPlayers++;
         }
     }
@@ -120,13 +134,14 @@ void saveInfo() {
     ofstream file("leaderboard.txt", ios::trunc);
     if (file.is_open()) {
         for (int i = 0; i < NumOfPlayers; i++) {
-            file << players[i].name << " " 
-                 << players[i].score << " " 
-                 << players[i].time << endl;
+            file << players[i].name       << " " 
+                 << players[i].score      << " " 
+                 << players[i].time       << " " 
+                 << players[i].difficulty << " " 
+                 << players[i].dimensions << endl;
         }
     }
     file.close();
-    // After saving, display the updated leaderboard.
     leaderboard();
 }
 
@@ -141,16 +156,31 @@ void leaderboard() {
     
 
     // Table Headers
-    cout << GRAY << setw(13) << left << "Name"
-         << setw(15) << "Score"
-         << setw(10) << "Time(s)" << RESET << "\n";
-    cout << PURPLE << string(40, '_') << RESET << "\n";
+    cout << SILVER << setw(20) << left << "Name"
+         << setw(11) << "Score"
+         << setw(9) << "Time(s)"
+         << setw(15) << "Difficulty"
+         << setw(10) << "Board" << RESET << "\n";
+    cout << PURPLE << string(60, '_') << RESET << "\n";
 
     // Print each player's data
     for (int i = 0; i < NumOfPlayers; i++) {
-        cout << GRAY << setw(15) << left << players[i].name
-             << setw(15) << players[i].score
-             << setw(10) << players[i].time << RESET << "\n";
+        string color;
+        if (i == 0) {
+            color = YELLOW; 
+        } else if (i == 1) {
+            color = GRAY; 
+        } else if (i == 2) {
+            color = BRONZE; 
+        } else {
+            color = RESET;   
+        }
+
+        cout << color << setw(20) << left << players[i].name
+             << setw(11) << players[i].score
+             << setw(9) << players[i].time
+             << setw(15) << players[i].difficulty
+             << setw(10) << players[i].dimensions << RESET << "\n";
     }
 }
 
@@ -249,17 +279,25 @@ void getGameDifficulty() {
     char click1 = getch();
     switch (click1) {
     case '1':
-        bombCount = (rows * cols) / 10; // ~10% bombs
+        bombCount = (rows * cols) / 10;
+        difficultyMultiplier = 1;
+        difficultyLevel = "Easy";
         break;
     case '2':
-        bombCount = (rows * cols) / 6;  // ~16% bombs
+        bombCount = (rows * cols) / 6;
+        difficultyMultiplier = 2;
+        difficultyLevel = "Medium";
         break;
     case '3':
-        bombCount = (rows * cols) / 4;  // 25% bombs
+        bombCount = (rows * cols) / 4;
+        difficultyMultiplier = 4;
+        difficultyLevel = "Hard";
         break;
-    default: // Default to easy if input is invalid
+    default:
         cout << "\033[1;37;46m" << "Invalid selection. Defaulting to Easy.\n" << RESET;
         bombCount = (rows * cols) / 10;
+        difficultyMultiplier = 1;
+        difficultyLevel = "Easy";
         pauseForMilliseconds(2000);
         break;
     }
