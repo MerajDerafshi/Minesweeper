@@ -88,14 +88,38 @@ void pauseForMilliseconds(int seconds) {
 void saveData(string name, long long int time, bool win) {
     
     long long effective_time = max(1LL, time);
-    long long score = win ? (rows * cols * difficultyMultiplier * 100) / effective_time : 0; // Score is 0 for a loss
+    long long newScore = win ? (rows * cols * difficultyMultiplier * 100) / effective_time : 0; // Score is 0 for a loss
 
-    ofstream file("leaderboard.txt", ios::app); // Open in append mode
-    if (file.is_open()) {
-        string dims = to_string(rows) + "x" + to_string(cols);
-        file << name << " " << score << " " << time << " " << difficultyLevel << " " << dims << endl;
+    loadData();
+
+    bool playerFound = false;
+    // Check if the player already has a score on the leaderboard
+    for (int i = 0; i < NumOfPlayers; i++) {
+        if (players[i].name == name) {
+            playerFound = true;
+            // If the new score is better, update the player's record
+            if (newScore > players[i].score) {
+                players[i].score = newScore;
+                players[i].time = time;
+                players[i].difficulty = difficultyLevel;
+                players[i].dimensions = to_string(rows) + "x" + to_string(cols);
+            }
+            break; // Player found, no need to search further
+        }
     }
-    file.close();
+
+    // If the player is new and there's space, add them to the leaderboard
+    if (!playerFound && NumOfPlayers < 100) {
+        players[NumOfPlayers].name = name;
+        players[NumOfPlayers].score = newScore; // This will be 0 for a loss
+        players[NumOfPlayers].time = time;
+        players[NumOfPlayers].difficulty = difficultyLevel;
+        players[NumOfPlayers].dimensions = to_string(rows) + "x" + to_string(cols);
+        NumOfPlayers++;
+    }
+
+    // Save the updated data back to the file
+    saveInfo();
 }
  
 void loadData() {
@@ -113,8 +137,6 @@ void loadData() {
         }
     }
     file.close();
-    // After loading, sort the data to ensure the leaderboard is in order.
-    sortLeaderboard();
 }
 void sortLeaderboard() {
     for (int i = 0; i < NumOfPlayers - 1; i++) {
@@ -127,8 +149,6 @@ void sortLeaderboard() {
             }
         }
     }
-    // After sorting the data in memory, save it back to the file.
-    saveInfo();
 }
 void saveInfo() {
     ofstream file("leaderboard.txt", ios::trunc);
@@ -142,11 +162,12 @@ void saveInfo() {
         }
     }
     file.close();
-    leaderboard();
 }
 
 void leaderboard() {
     clearScreen();
+    loadData();
+    sortLeaderboard();
     // ASCII Art for the title
     cout << TURQUOISE << " _                _           _                         _ \n";            pauseForMilliseconds(500);
     cout << "| | ___  __ _  __| | ___ _ __| |__   ___   __ _ _ __ __| |\n";                         pauseForMilliseconds(500);
@@ -379,7 +400,7 @@ int main() {
             break;
         }
         case '2': // Leaderboard
-            loadData(); // This will load, sort, and display the leaderboard
+            leaderboard(); // This will load, sort, and display the leaderboard
             cout  << "\033[1;37m" << "\nPress Enter to return to the menu..." << RESET;
             getch();
             break;
