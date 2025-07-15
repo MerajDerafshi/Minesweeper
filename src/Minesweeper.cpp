@@ -54,6 +54,7 @@ void showMenu();
 void getPlayerName();
 void getGameDimensions();
 void getGameDifficulty();
+void howToPlay();
 void printBorder(int cols);
 void MainGame(char** min, char** cell, int rows, int cols);
 void ifIsZero(char** min, char** cell, int i, int j, int rows, int cols);
@@ -68,7 +69,7 @@ void saveInfo();
 
 // Utility
 void clearScreen();
-void pauseForSeconds(int seconds);
+void pauseForMilliseconds(int seconds);
 
 
 // --- Utility Functions ---
@@ -325,6 +326,15 @@ void getGameDifficulty() {
     flagsRemaining = bombCount;
 }
 
+void howToPlay() {
+    // Display UI and Board
+    cout << TURQUOISE << "Hi, " << playerName << "\n" << RESET;
+    cout << SILVER << "Use W,A,S,D to move. Enter to select." << "\n";
+    cout << "f -> Flag/unFlag" << "\n";
+    cout << "Esc -> Return to Menu" << "\n" << RESET;
+    pauseForMilliseconds(5000);
+    clearScreen();
+}
 
 int main() {
     #ifdef _WIN32
@@ -342,6 +352,7 @@ int main() {
             getPlayerName();
             getGameDimensions();
             getGameDifficulty();
+            howToPlay();
 
             // Dynamically allocate memory for the game boards
             char** cell = new char*[rows]; // Player-visible board
@@ -440,18 +451,11 @@ void MainGame(char** min, char** cell, int rows, int cols) {
             long long timer = duration_cast<seconds>(high_resolution_clock::now() - theStartTime).count();
             saveData(playerName, timer, true); // Save win data
 
-            clearScreen();
             cout << GREEN << "\nCongratulations! You Win!\n";
             cout << "Time: " << timer << " seconds.\n" << RESET;
             pauseForMilliseconds(4000);
             return; // Exit MainGame and return to the main menu
         }
-
-        // Display UI and Board
-        cout << TURQUOISE << "Hi, " << playerName << "\n" << RESET;
-        cout << "Use W,A,S,D to move. Enter to select." << "\n";
-        cout << "f -> Flag/unFlag" << "\n";
-        cout << "Esc -> Return to Menu" << "\n";
 
         printBorder(cols);
 
