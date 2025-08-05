@@ -324,6 +324,8 @@ void getGameDifficulty() {
         break;
     }
     flagsRemaining = bombCount;
+    clearScreen();
+    howToPlay();
 }
 
 void howToPlay() {
@@ -352,7 +354,6 @@ int main() {
             getPlayerName();
             getGameDimensions();
             getGameDifficulty();
-            howToPlay();
 
             // Dynamically allocate memory for the game boards
             char** cell = new char*[rows]; // Player-visible board
@@ -485,7 +486,10 @@ void MainGame(char** min, char** cell, int rows, int cols) {
                     case '0':
                         cout << GRAY        << " " << cell[i][j] << " " << RESET;
                         break;
-                    default: // For '#', 'f', '0', etc.
+                    case 'f':
+                        cout << BRONZE      << " " << cell[i][j] << " " << RESET;
+                        break;
+                    default: // For '#', '0', etc.
                         cout << " " << cell[i][j] << " ";
                         break;
                     }
@@ -565,7 +569,10 @@ void MainGame(char** min, char** cell, int rows, int cols) {
                     case '0':
                         cout << GRAY        << " " << cell[i][j] << " " << RESET;
                         break;
-                    default: // For '#', 'f', '0', etc.
+                    case 'f':
+                        cout << BRONZE      << " " << cell[i][j] << " " << RESET;
+                        break;
+                    default: // For '#', '0', etc.
                         cout << " " << cell[i][j] << " ";
                         break;
                 }
