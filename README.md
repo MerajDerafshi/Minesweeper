@@ -1,2 +1,0 @@
-# FirstRepo
-Hi there hello!
