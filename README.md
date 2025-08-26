@@ -24,7 +24,7 @@ This project is a minimal clone of the popular **Minesweeper** game🕹️. This
 
 ### 🧩 Main Menu
 
-![Main Menu](./image/Main Menu.png)
+![Main Menu](./image/MainMenu.png)
 
 ---
 
@@ -36,7 +36,7 @@ This project is a minimal clone of the popular **Minesweeper** game🕹️. This
 
 ### ⚙️ Difficulty Selection
 
-![Difficulty Menu](./image/Difficulty Menu.png)
+![Difficulty Menu](./image/DifficultyMenu.png)
 
 ---
 
